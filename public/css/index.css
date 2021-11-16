@@ -1,0 +1,29 @@
+@font-face {
+    font-family: 'VGA';
+    src: url(vga.ttf) format('truetype');
+}
+* {background-color: black; margin: 0; padding: 0; font-size: large;}
+
+#input {
+    display: inline-block;
+    color: green;
+    font-family: 'VGA';
+    border: none;
+    width: 100vh;
+    height: auto;
+    
+}
+#input:focus {
+    outline: none!important;
+}
+
+#usernamecontainer {
+    color: green;
+    font-family: 'VGA';
+}
+
+#messages {
+    color: green;
+    font-family: 'VGA';
+    list-style-type: none;
+}

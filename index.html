@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" href="css/index.css" rel="stylesheet">
+    <title>Hello Friend</title>
+</head>
+
+<body>
+    <ul id="messages"></ul>
+    <form id="form">
+        <div id="usernamecontainer"><span id="usrtext"></span>@localhost:~$ <input id="input" autocomplete="off" autofocus></div>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        
+        var socket = io(); //Henter socket.io
+
+        //Lagrer HTML elementer
+        let input = document.getElementById('input');
+        let form = document.getElementById('form');
+        let messagelist = document.getElementById('messages');
+
+        //Lagrer brukernavn
+        let username = prompt('Input username: ')
+
+        //Sender brukernavn til server
+        socket.emit('USRNAME', username);
+
+        //Viser brukernavn i "konsollen"
+        document.getElementById('usrtext').innerHTML = username;
+        
+
+
+
+        //Venter på en enter og sender melding til server med verdien.
+        form.addEventListener('submit', function(e){
+            e.preventDefault();
+            if(input.value) {
+                socket.emit('chat message', input.value)
+                input.value = "";
+            }
+        });
+
+        //Mottar meldinger fra server og lager nytt listeelement.
+        socket.on('chat message', function(msg) {
+            let newmsg = document.createElement('li');
+            newmsg.textContent = msg;
+            messagelist.appendChild(newmsg);
+        });
+
+        //Mottar meldinger med brukerinfo fra server, og legger det til i listen.
+        socket.on('userconnected', function(newuser) {
+            let newuserconnected = document.createElement('li');
+            newuserconnected.textContent = newuser;
+            newuserconnected.setAttribute('style', 'color: blue;')
+            messagelist.appendChild(newuserconnected);
+        });
+        
+        //Mottar melding om at en bruker har disconnected og legger det til i listen. 
+        socket.on('userdisconnected', function(newuserdisc) {
+            let newuserdisconnected = document.createElement('li');
+            newuserdisconnected.textContent = newuserdisc;
+            newuserdisconnected.setAttribute('style', 'color: red;')
+            messagelist.appendChild(newuserdisconnected);
+        });
+        
+        
+
+    
+        
+
+    </script>
+</body>
+</html>

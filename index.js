@@ -14,6 +14,7 @@ const io = new Server(server);
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html')
 });
+//Jeg vet ikke hva denne linjen gjør men ekstern css fil fungerer ikke uten. 
 app.use(express.static('public'));
 
 //Opprettholder tilkobling og alle events skjer under tilkobling
